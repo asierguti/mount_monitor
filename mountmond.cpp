@@ -47,6 +47,7 @@ void ModuleConnector::EstablishConnection() {
   dest_addr_.nl_family = AF_NETLINK;
   dest_addr_.nl_pid = 0;
 
+  //NETLINK recvmsg will take ownership of this buffer, freeing it when it's not needed anymore
   nlh_ = static_cast<struct nlmsghdr *> (malloc(NLMSG_SPACE(MAX_PAYLOAD)));
   memset(nlh_, 0, NLMSG_SPACE(MAX_PAYLOAD));
   nlh_->nlmsg_len = NLMSG_SPACE(MAX_PAYLOAD);
@@ -77,6 +78,7 @@ void ModuleConnector::Run() {
   struct iovec iov;
   static struct msghdr msg_;
 
+  //NETLINK will take ownership of this buffer, freeing it when it's not needed anymore
   nlh = (struct nlmsghdr *)malloc(NLMSG_SPACE(MAX_PAYLOAD));
   memset(nlh, 0, NLMSG_SPACE(MAX_PAYLOAD));
   nlh->nlmsg_len = NLMSG_SPACE(MAX_PAYLOAD);
